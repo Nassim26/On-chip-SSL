@@ -1,0 +1,1 @@
+docker run --gpus all -it --rm -v ./DIET:/src/DIET nvcr.io/nvidia/pytorch:24.08-py3
