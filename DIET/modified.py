@@ -3,12 +3,12 @@ import numpy as np
 from tqdm import tqdm
 
 import torch
-#from torchsummary import summary
+# from torchsummary import summary
 from torch.utils.data import Dataset, DataLoader, Subset
 import torchvision
 from resnetlike import resnet18_nores
 from convnextlike import convnext_tiny_nores
-from ournet import OurNet, ReLU255
+from ournet import OurNet, ReLU255, LayerNorm
 from datetime import datetime
 from KRIAInterface import Conv2D_3x3
 
@@ -146,59 +146,69 @@ def train(net):
 
 
 settings = [
-  {#baseline
-    "channels": [3, 64, 128, 256, 512],
-    "set_sizes": [0, 5, 4, 4, 4],
-    "pools": [0, 0, 2, 2, 2]
+  {#custom
+    "channels": [3, 64, 128, 256],
+    "set_sizes": [0, 1, 1, 1],
+    "pools": [0, 0, 3, 2]
   },
-  {#less end channels
-    "channels": [3, 64, 128, 256, 256],
-    "set_sizes": [0, 5, 4, 4, 4],
-    "pools": [0, 0, 2, 2, 2]
-  },
-  {#less intermediate channels
-    "channels": [3, 64, 128, 128, 512],
-    "set_sizes": [0, 5, 4, 4, 4],
-    "pools": [0, 0, 2, 2, 2]
-  },
-  {#less deep
-    "channels": [3, 64, 128, 256, 512],
-    "set_sizes": [0, 4, 3, 3, 3],
-    "pools": [0, 0, 2, 2, 2]
-  },
-  {#even less deep
-    "channels": [3, 64, 128, 256, 512],
-    "set_sizes": [0, 3, 2, 2, 2],
-    "pools": [0, 0, 2, 2, 2]
-  },
-  {#faster pooling
-    "channels": [3, 64, 64, 128, 256, 512],
-    "set_sizes": [0, 1, 4, 4, 4, 4],
-    "pools": [0, 0, 2, 0, 2, 2]
-  }
+  # {#baseline
+  #   "channels": [3, 64, 128, 256, 512],
+  #   "set_sizes": [0, 5, 4, 4, 4],
+  #   "pools": [0, 0, 2, 2, 2]
+  # },
+  # {#less end channels
+  #   "channels": [3, 64, 128, 256, 256],
+  #   "set_sizes": [0, 5, 4, 4, 4],
+  #   "pools": [0, 0, 2, 2, 2]
+  # },
+  # {#less intermediate channels
+  #   "channels": [3, 64, 128, 128, 512],
+  #   "set_sizes": [0, 5, 4, 4, 4],
+  #   "pools": [0, 0, 2, 2, 2]
+  # },
+  # {#less deep
+  #   "channels": [3, 64, 128, 256, 512],
+  #   "set_sizes": [0, 4, 3, 3, 3],
+  #   "pools": [0, 0, 2, 2, 2]
+  # },
+  # {#even less deep
+  #   "channels": [3, 64, 128, 256, 512],
+  #   "set_sizes": [0, 3, 2, 2, 2],
+  #   "pools": [0, 0, 2, 2, 2]
+  # },
+  # {#faster pooling
+  #   "channels": [3, 64, 64, 128, 256, 512],
+  #   "set_sizes": [0, 1, 4, 4, 4, 4],
+  #   "pools": [0, 0, 2, 0, 2, 2]
+  # }
 ]
 
 layer_types = [
-  {# resnet18like
-    "conv3x3_layer": partial(torch.nn.Conv2d, kernel_size=3, stride=1, padding=1, bias=False),
-    "norm_layer": torch.nn.BatchNorm2d,
+  {# custom
+    "conv3x3_layer": partial(torch.nn.Conv2d, kernel_size=3, stride=1, padding=0, bias=False),
+    "norm_layer": LayerNorm,
     "relu_layer": torch.nn.ReLU,
   },
-  {# no norm, with bias
-    "conv3x3_layer": partial(torch.nn.Conv2d, kernel_size=3, stride=1, padding=1, bias=True),
-    "norm_layer": torch.nn.Identity,
-    "relu_layer": torch.nn.ReLU,
-  },
-  {# quant convolution + relu255
-    "conv3x3_layer": partial(Conv2D_3x3, bias=False),
-    "norm_layer": torch.nn.BatchNorm2d,
-    "relu_layer": ReLU255,
-  },
-  {# full quant, no norm, with bias
-    "conv3x3_layer": partial(Conv2D_3x3, bias=True),
-    "norm_layer": torch.nn.Identity,
-    "relu_layer": ReLU255,
-  },
+  # {# resnet18like
+  #   "conv3x3_layer": partial(torch.nn.Conv2d, kernel_size=3, stride=1, padding=1, bias=False),
+  #   "norm_layer": torch.nn.BatchNorm2d,
+  #   "relu_layer": torch.nn.ReLU,
+  # },
+  # {# no norm, with bias
+  #   "conv3x3_layer": partial(torch.nn.Conv2d, kernel_size=3, stride=1, padding=1, bias=True),
+  #   "norm_layer": torch.nn.Identity,
+  #   "relu_layer": torch.nn.ReLU,
+  # },
+  # {# quant convolution + relu255
+  #   "conv3x3_layer": partial(Conv2D_3x3, bias=False),
+  #   "norm_layer": torch.nn.BatchNorm2d,
+  #   "relu_layer": ReLU255,
+  # },
+  # {# full quant, no norm, with bias
+  #   "conv3x3_layer": partial(Conv2D_3x3, bias=True),
+  #   "norm_layer": torch.nn.Identity,
+  #   "relu_layer": ReLU255,
+  # },
 ]
 
 for l in layer_types:
