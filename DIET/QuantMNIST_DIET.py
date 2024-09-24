@@ -29,13 +29,13 @@ class UnnormalizeTransform:
 
 device = torch.device("cuda:2" if torch.cuda.is_available() else "cpu")
 
-num_epoch = 25
+num_epoch = 35
 batch_size = 1024
 lr = 1e-3
 weight_decay = 0.05
 label_smoothing = 0.8
 num_classes = 10
-limit_data = 50*batch_size  # np.inf to train with whole training set
+limit_data = np.inf  # np.inf to train with whole training set
 
 transform = [
     torchvision.transforms.ToTensor(),
