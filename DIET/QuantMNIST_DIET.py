@@ -161,4 +161,4 @@ class MinimalNetwork(nn.Module):
         x = self.Flatten(x)
         return x
 
-train(MinimalNetwork(1))
+train(MinimalNetwork(1).to(device))
