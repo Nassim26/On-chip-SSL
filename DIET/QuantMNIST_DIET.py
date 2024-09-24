@@ -57,7 +57,7 @@ class DatasetWithIndices(Dataset):
         return len(self.dataset)
 
 training_data = torchvision.datasets.MNIST(
-    train=True, download=False, root="\data",
+    train=True, download=True, root="\data",
     transform=torchvision.transforms.Compose(transform)
 )
 
