@@ -30,40 +30,17 @@ class UnnormalizeTransform:
 device = torch.device("cuda:2" if torch.cuda.is_available() else "cpu")
 
 num_epoch = 35
-da_strength = 0
 batch_size = 1024
-lr = 1e-3 
+lr = 1e-3
 weight_decay = 0.05
 label_smoothing = 0.8
 num_classes = 10
 limit_data = np.inf  # np.inf to train with whole training set
 
-test_transform = [
+transform = [
     torchvision.transforms.ToTensor(),
     UnnormalizeTransform(255)
 ]
-
-train_transform = test_transform
-
-if da_strength > 0:
-  train_transform = test_transform + [
-      torchvision.transforms.RandomResizedCrop(32, antialias=True),
-      torchvision.transforms.RandomHorizontalFlip(),
-  ]
-if da_strength > 1:
-    train_transform += [
-        torchvision.transforms.RandomApply(torch.nn.ModuleList(
-            [torchvision.transforms.ColorJitter(0.4, 0.4, 0.4, 0.2)]
-        ), p=0.3),
-        torchvision.transforms.RandomGrayscale(p=0.2)
-    ]
-if da_strength > 2:
-    train_transform += [
-        torchvision.transforms.RandomApply(torch.nn.ModuleList(
-            [torchvision.transforms.GaussianBlur((3, 3), (1.0, 2.0))]
-        ), p=0.2),
-        torchvision.transforms.RandomErasing(p=0.25)
-    ]
 
 class DatasetWithIndices(Dataset):
     def __init__(self, dataset):
@@ -81,7 +58,7 @@ class DatasetWithIndices(Dataset):
 
 training_data = torchvision.datasets.CIFAR10(
     train=True, download=True, root="\data",
-    transform=torchvision.transforms.Compose(train_transform)
+    transform=torchvision.transforms.Compose(transform)
 )
 
 if limit_data < np.inf:
@@ -91,7 +68,7 @@ if limit_data < np.inf:
 training_data = DatasetWithIndices(training_data)
 test_data = torchvision.datasets.CIFAR10(
     train=False, download=False, root="\data",
-    transform=torchvision.transforms.Compose(test_transform)
+    transform=torchvision.transforms.Compose(transform)
 )
 
 def train(net):
@@ -173,7 +150,7 @@ class MinimalNetwork(nn.Module):
         self.Flatten = nn.Flatten()
         self.hiddenLayer2 = KRIAInterface.Conv2D_3x3(32, 64, bias=True)
         self.hiddenLayer3 = KRIAInterface.Conv2D_3x3(64, 128, bias=True)
-        self.embedding_dim = 10816
+        self.embedding_dim = 3200
 
     def forward(self, x):
         x = self.hiddenLayer0(x)
@@ -183,7 +160,7 @@ class MinimalNetwork(nn.Module):
         x = self.hiddenLayer2(x)
         x = self.actFunc(x)
         x = self.maxPool(x)
-        z = self.hiddenLayer3(x)
+        x = self.hiddenLayer3(x)
         x = self.actFunc(x)
         x = self.maxPool(x)
         x = self.Flatten(x)
