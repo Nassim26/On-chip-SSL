@@ -143,12 +143,13 @@ def train(net):
 class MinimalNetwork(nn.Module):
     def __init__(self, inChannels):
         super(MinimalNetwork, self).__init__()
-        self.hiddenLayer0 = KRIAInterface.Conv2D_3x3(inChannels, 16, bias=False)
+        self.hiddenLayer0 = KRIAInterface.Conv2D_3x3(inChannels, 16, bias=True)
         self.actFunc = ReLU255()
         self.maxPool = nn.MaxPool2d((2, 2), stride = 2)
-        self.hiddenLayer1 = KRIAInterface.Conv2D_3x3(16, 32, bias=False)
+        self.hiddenLayer1 = KRIAInterface.Conv2D_3x3(16, 32, bias=True)
         self.Flatten = nn.Flatten()
-        self.hiddenLayer2 = KRIAInterface.Conv2D_3x3(32, 64, bias=False)
+        self.hiddenLayer2 = KRIAInterface.Conv2D_3x3(32, 64, bias=True)
+        self.hiddenLayer3 = KRIAInterface.Conv2D_3x3(64, 128, bias=True)
         self.embedding_dim = 10816
 
     def forward(self, x):
@@ -157,6 +158,9 @@ class MinimalNetwork(nn.Module):
         x = self.hiddenLayer1(x)
         x = self.actFunc(x)
         x = self.hiddenLayer2(x)
+        x = self.actFunc(x)
+        x = self.maxPool(x)
+        x = self.hiddenLayer3(x)
         x = self.actFunc(x)
         x = self.maxPool(x)
         x = self.Flatten(x)
