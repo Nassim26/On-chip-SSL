@@ -149,7 +149,7 @@ class MinimalNetwork(nn.Module):
         self.hiddenLayer1 = KRIAInterface.Conv2D_3x3(16, 32, bias=False)
         self.Flatten = nn.Flatten()
         self.hiddenLayer2 = KRIAInterface.Conv2D_3x3(32, 64, bias=False)
-        self.embedding_dim = 9216
+        self.embedding_dim = 43264
 
     def forward(self, x):
         x = self.hiddenLayer0(x)
