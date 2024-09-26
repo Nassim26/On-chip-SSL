@@ -35,7 +35,7 @@ lr = 1e-3
 weight_decay = 0.05
 label_smoothing = 0.8
 num_classes = 10
-limit_data = np.inf  # np.inf to train with whole training set
+limit_data = 50 * batch_size  # np.inf to train with whole training set
 
 transform = [
     torchvision.transforms.ToTensor(),
@@ -56,7 +56,7 @@ class DatasetWithIndices(Dataset):
     def __len__(self):
         return len(self.dataset)
 
-training_data = torchvision.datasets.MNIST(
+training_data = torchvision.datasets.CIFAR10(
     train=True, download=True, root="\data",
     transform=torchvision.transforms.Compose(transform)
 )
@@ -66,7 +66,7 @@ if limit_data < np.inf:
   training_data = Subset(training_data, indices)
 
 training_data = DatasetWithIndices(training_data)
-test_data = torchvision.datasets.MNIST(
+test_data = torchvision.datasets.CIFAR10(
     train=False, download=False, root="\data",
     transform=torchvision.transforms.Compose(transform)
 )
@@ -161,4 +161,4 @@ class MinimalNetwork(nn.Module):
         x = self.Flatten(x)
         return x
 
-train(MinimalNetwork(1).to(device))
+train(MinimalNetwork(3).to(device))
