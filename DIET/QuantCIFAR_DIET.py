@@ -43,6 +43,8 @@ test_transform = [
     UnnormalizeTransform(255)
 ]
 
+train_transform = test_transform
+
 if da_strength > 0:
   train_transform = test_transform + [
       torchvision.transforms.RandomResizedCrop(32, antialias=True),
