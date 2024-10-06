@@ -145,7 +145,7 @@ class MinimalNetwork(nn.Module):
         super(MinimalNetwork, self).__init__()
         self.hiddenLayer0 = KRIAInterface.Conv2D_3x3(inChannels, 16, bias=True)
         self.actFunc = ReLU255()
-        self.maxPool = nn.MaxPool2d((2, 2), stride = 2)
+        self.maxPool = nn.MaxPool2d((2, 2), stride = 1)
         self.hiddenLayer1 = KRIAInterface.Conv2D_3x3(16, 32, bias=True)
         self.Flatten = nn.Flatten()
         self.hiddenLayer2 = KRIAInterface.Conv2D_3x3(32, 64, bias=True)
