@@ -157,12 +157,12 @@ class MinimalNetwork(nn.Module):
         x = self.actFunc(x)
         x = self.hiddenLayer1(x)
         x = self.actFunc(x)
+        x = self.maxPool(x)
         x = self.hiddenLayer2(x)
         x = self.actFunc(x)
         x = self.maxPool(x)
         x = self.hiddenLayer3(x)
         x = self.actFunc(x)
-        x = self.maxPool(x)
         x = self.Flatten(x)
         return x
 
