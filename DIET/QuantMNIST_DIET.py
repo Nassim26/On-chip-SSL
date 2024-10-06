@@ -56,7 +56,7 @@ class DatasetWithIndices(Dataset):
     def __len__(self):
         return len(self.dataset)
 
-training_data = torchvision.datasets.CIFAR10(
+training_data = torchvision.datasets.FashionMNIST(
     train=True, download=True, root="\data",
     transform=torchvision.transforms.Compose(transform)
 )
@@ -66,7 +66,7 @@ if limit_data < np.inf:
   training_data = Subset(training_data, indices)
 
 training_data = DatasetWithIndices(training_data)
-test_data = torchvision.datasets.CIFAR10(
+test_data = torchvision.datasets.FashionMNIST(
     train=False, download=False, root="\data",
     transform=torchvision.transforms.Compose(transform)
 )
@@ -160,10 +160,9 @@ class MinimalNetwork(nn.Module):
         x = self.maxPool(x)
         x = self.hiddenLayer2(x)
         x = self.actFunc(x)
-        x = self.maxPool(x)
         x = self.hiddenLayer3(x)
         x = self.actFunc(x)
         x = self.Flatten(x)
         return x
 
-train(MinimalNetwork(3).to(device))
+train(MinimalNetwork(1).to(device))
