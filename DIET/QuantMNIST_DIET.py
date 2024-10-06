@@ -156,16 +156,16 @@ class MinimalNetwork(nn.Module):
     def forward(self, x):
         x = self.hiddenLayer0(x)
         x = self.actFunc(x)
-        x = self.maxPool2(x)
+        # x = self.maxPool2(x)
         x = self.hiddenLayer1(x)
         x = self.actFunc(x)
-        x = self.maxPool1(x)
+        # x = self.maxPool1(x)
         x = self.hiddenLayer2(x)
         x = self.actFunc(x)
-        x = self.maxPool1(x)
-        x = self.hiddenLayer3(x)
-        x = self.actFunc(x)
-        x = self.maxPool1(x)
+        # x = self.maxPool1(x)
+        # x = self.hiddenLayer3(x)
+        # x = self.actFunc(x)
+        # x = self.maxPool1(x)
         x = self.Flatten(x)
         return x
 
