@@ -29,7 +29,7 @@ class UnnormalizeTransform:
 
 device = torch.device("cuda:2" if torch.cuda.is_available() else "cpu")
 
-num_epoch = 70
+num_epoch = 35
 batch_size = 1024
 lr = 1e-3
 weight_decay = 0.05
@@ -151,7 +151,7 @@ class MinimalNetwork(nn.Module):
         self.Flatten = nn.Flatten()
         self.hiddenLayer2 = KRIAInterface.Conv2D_3x3(32, 64, bias=True)
         self.hiddenLayer3 = KRIAInterface.Conv2D_3x3(64, 128, bias=True)
-        self.embedding_dim = 2048
+        self.embedding_dim = 6400
 
     def forward(self, x):
         x = self.hiddenLayer0(x)
