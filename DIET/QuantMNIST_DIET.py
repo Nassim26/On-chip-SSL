@@ -34,7 +34,7 @@ batch_size = 1024
 lr = 1e-3
 weight_decay = 0.05
 label_smoothing = 0.8
-num_classes = 10
+num_classes = 37
 limit_data = np.inf  # np.inf to train with whole training set
 
 transform = [
@@ -56,7 +56,7 @@ class DatasetWithIndices(Dataset):
     def __len__(self):
         return len(self.dataset)
 
-training_data = torchvision.datasets.FashionMNIST(
+training_data = torchvision.datasets.EMNIST(
     train=True, download=True, root="\data",
     transform=torchvision.transforms.Compose(transform)
 )
@@ -66,7 +66,7 @@ if limit_data < np.inf:
   training_data = Subset(training_data, indices)
 
 training_data = DatasetWithIndices(training_data)
-test_data = torchvision.datasets.FashionMNIST(
+test_data = torchvision.datasets.EMNIST(
     train=False, download=False, root="\data",
     transform=torchvision.transforms.Compose(transform)
 )
