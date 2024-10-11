@@ -88,9 +88,9 @@ def train(net):
   W_probe = torch.nn.Linear(embedding_dim, num_classes).to(device)
   W_diet = torch.nn.Linear(embedding_dim, output_size, bias=False).to(device)
 
-  optimizer = torch.optim.SGD(
+  optimizer = torch.optim.AdamW(
       list(net.parameters()) + list(W_probe.parameters()) + list(W_diet.parameters()),
-      lr=lr
+      lr=lr, weight_decay=weight_decay
   )
 
   criterion = torch.nn.CrossEntropyLoss(label_smoothing=0.0)
