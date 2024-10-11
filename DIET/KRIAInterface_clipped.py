@@ -3,6 +3,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import math
 
+import QNN
+
 class FConv2D_3x3(torch.autograd.Function):
     @staticmethod
     def forward(ctx, input, weight, bias):
