@@ -11,9 +11,6 @@ import numpy as np
 from tqdm import tqdm
 from datetime import datetime
 
-if __name__ == '__main__': 
-    freeze_support()
-
 def relu255(x):
     return torch.clamp(x, 0, 255)
 
