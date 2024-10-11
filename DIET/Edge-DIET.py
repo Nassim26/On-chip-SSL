@@ -30,7 +30,7 @@ class UnnormalizeTransform:
 
 device = torch.device("cuda:2" if torch.cuda.is_available() else "cpu")
 
-num_epoch = 30
+num_epoch = 5
 batch_size = 1024
 output_size = 10384
 lr = 1e-3
@@ -58,7 +58,7 @@ class DatasetWithIndices(Dataset):
     def __len__(self):
         return len(self.dataset)
 
-training_data = torchvision.datasets.KMNIST(
+training_data = torchvision.datasets.MNIST(
     train=True, download=True, root="\data",
     transform=torchvision.transforms.Compose(transform)
 )
@@ -68,7 +68,7 @@ if limit_data < np.inf:
   training_data = Subset(training_data, indices)
 
 training_data = DatasetWithIndices(training_data)
-test_data = torchvision.datasets.KMNIST(
+test_data = torchvision.datasets.MNIST(
     train=False, download=False, root="\data",
     transform=torchvision.transforms.Compose(transform)
 )
@@ -157,14 +157,14 @@ class MinimalNetwork(nn.Module):
 
     def forward(self, x):
         x = self.hiddenLayer0(x)
-        #x = self.actFunc(x)
+        x = self.actFunc(x)
         # x = self.maxPool2(x)
         x = self.hiddenLayer1(x)
-        #x = self.actFunc(x)
+        x = self.actFunc(x)
         x = self.maxPool2(x)
         x = self.hiddenLayer2(x)
         #x = self.hiddenLayer3(x)
-        #x = self.actFunc(x)
+        x = self.actFunc(x)
         # x = self.maxPool1(x)
         # x = self.hiddenLayer3(x)
         # x = self.actFunc(x)
