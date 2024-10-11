@@ -29,7 +29,7 @@ class UnnormalizeTransform:
 
 device = torch.device("cuda:2" if torch.cuda.is_available() else "cpu")
 
-num_epoch = 20
+num_epoch = 5
 batch_size = 1024
 lr = 1e-3
 weight_decay = 0.05
@@ -124,6 +124,7 @@ def train(net):
               np.mean(run_loss_diet), np.mean(run_acc)))
         file.write(f"{epoch},{np.mean(run_loss_diet)},{np.mean(run_acc)}\n")
         file.flush()
+    torch.save(net.state_dict(), 'minimal_network_params.pth')
     print('\nTraining done.')
 
     # Test
