@@ -31,7 +31,7 @@ class FConv2D_3x3(torch.autograd.Function):
         return result_clipped
 
     @staticmethod
-    @torch.autograd.Function.once_differentiable
+    @torch.autograd.function.once_differentiable
     def backward(ctx, grad_output):
         """
         In the backward pass, we receive a Tensor containing the gradient of the loss
