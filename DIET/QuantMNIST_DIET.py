@@ -35,7 +35,7 @@ lr = 1e-3
 weight_decay = 0.05
 label_smoothing = 0.8
 num_classes = 10
-limit_data = np.inf  # np.inf to train with whole training set
+limit_data = batch_size * 10  # np.inf to train with whole training set
 
 transform = [
     torchvision.transforms.ToTensor(),
