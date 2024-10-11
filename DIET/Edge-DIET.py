@@ -1,5 +1,6 @@
 import Dataset
 import KRIAInterface
+import KRIAInterface_clipped
 import torchvision
 import torch
 from torchvision.transforms import transforms
@@ -144,25 +145,25 @@ def train(net):
 class MinimalNetwork(nn.Module):
     def __init__(self, inChannels):
         super(MinimalNetwork, self).__init__()
-        self.hiddenLayer0 = KRIAInterface.Conv2D_3x3(inChannels, 16, bias=True)
+        self.hiddenLayer0 = KRIAInterface_clipped.Conv2D_3x3(inChannels, 16, bias=True)
         self.actFunc = ReLU255()
         self.maxPool1 = nn.MaxPool2d((2, 2), stride = 1)
         self.maxPool2 = nn.MaxPool2d((2, 2), stride = 2)
-        self.hiddenLayer1 = KRIAInterface.Conv2D_3x3(16, 32, bias=True)
+        self.hiddenLayer1 = KRIAInterface_clipped.Conv2D_3x3(16, 32, bias=True)
         self.Flatten = nn.Flatten()
-        self.hiddenLayer2 = KRIAInterface.Conv2D_3x3(32, 64, bias=True)
+        self.hiddenLayer2 = KRIAInterface_clipped.Conv2D_3x3(32, 64, bias=True)
         self.hiddenLayer3 = KRIAInterface.Conv2D_3x3(64, 128, bias=True)
         self.embedding_dim = 6400
 
     def forward(self, x):
         x = self.hiddenLayer0(x)
-        x = self.actFunc(x)
+        #x = self.actFunc(x)
         # x = self.maxPool2(x)
         x = self.hiddenLayer1(x)
-        x = self.actFunc(x)
+        #x = self.actFunc(x)
         x = self.maxPool2(x)
         x = self.hiddenLayer2(x)
-        x = self.actFunc(x)
+        #x = self.actFunc(x)
         # x = self.maxPool1(x)
         # x = self.hiddenLayer3(x)
         # x = self.actFunc(x)
