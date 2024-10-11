@@ -58,7 +58,7 @@ class DatasetWithIndices(Dataset):
     def __len__(self):
         return len(self.dataset)
 
-training_data = torchvision.datasets.MNIST(
+training_data = torchvision.datasets.KMNIST(
     train=True, download=True, root="\data",
     transform=torchvision.transforms.Compose(transform)
 )
@@ -68,7 +68,7 @@ if limit_data < np.inf:
   training_data = Subset(training_data, indices)
 
 training_data = DatasetWithIndices(training_data)
-test_data = torchvision.datasets.MNIST(
+test_data = torchvision.datasets.KMNIST(
     train=False, download=False, root="\data",
     transform=torchvision.transforms.Compose(transform)
 )
