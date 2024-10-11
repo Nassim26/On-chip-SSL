@@ -137,6 +137,7 @@ def train(net):
 
     # Test
     net.eval()
+    all_preds, all_labels = [], [] 
     with torch.no_grad():
       run_acc_test = []
       for j, (x, y) in enumerate(test_loader):
@@ -144,6 +145,8 @@ def train(net):
         y = y.to(device)
         z = net(x)
         logits_probe = W_probe(z.detach())
+        all_preds.append(logits_probe.argmax(1).cpu().numpy())
+        all_labels.append(y.cpu().numpy())
         run_acc_test.append(torch.mean((y == logits_probe.argmax(1)).to(float)).item())
     print('Test accuracy=%.4f' % np.mean(run_acc_test))
     file.write(f"Final,,{np.mean(run_acc_test)}\n")
