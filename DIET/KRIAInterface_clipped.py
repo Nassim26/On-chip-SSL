@@ -15,7 +15,7 @@ class FConv2D_3x3(torch.autograd.Function):
         objects for use in the backward pass using the ctx.save_for_backward method.
         """
         # Perform the convolution with quantized weights
-        input_clipped = toch.clamp(input, 0, 255)
+        input_clipped = torch.clamp(input, 0, 255)
         conv_result = F.conv2d(input_clipped, QNN.quantize(weight))
 
         # Add bias if present
