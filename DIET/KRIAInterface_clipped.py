@@ -1,4 +1,5 @@
 import torch
+import toch.nn as nn
 import torch.nn.functional as F
 import math
 
