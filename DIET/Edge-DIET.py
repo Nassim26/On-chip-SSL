@@ -73,6 +73,8 @@ test_data = torchvision.datasets.MNIST(
     transform=torchvision.transforms.Compose(transform)
 )
 
+epoch_losses, epoch_accuracies = [], []
+
 def train(net):
   # make loaders
   training_loader = DataLoader(
@@ -124,6 +126,9 @@ def train(net):
           pbar.set_description('epoch: %s/%s, iter: %s/%s, loss_diet=%.4e, accuracy=%.4f' % (
               epoch, num_epoch, i, len(training_loader),
               np.mean(run_loss_diet), np.mean(run_acc)))
+        
+        epoch_losses.append(np.mean(run_loss_diet))
+        epoch_accuracies.append(np.mean(run_acc))
         file.write(f"{epoch},{np.mean(run_loss_diet)},{np.mean(run_acc)}\n")
         file.flush()
     print('\nTraining done.')
@@ -141,6 +146,38 @@ def train(net):
     print('Test accuracy=%.4f' % np.mean(run_acc_test))
     file.write(f"Final,,{np.mean(run_acc_test)}\n")
     file.flush()
+
+    # Save Model
+    torch.save(net.state_dict(), "minimal_network_params.pth")
+
+    # Generate and Save Figures
+    # 1. Loss and Accuracy Plot
+    plt.figure(figsize=(10,6))
+    plt.plot(np.arange(num_epoch), epoch_losses, label='Loss', color='red', linewidth=2)
+    plt.plot(np.arange(num_epoch), epoch_accuracies, label='Accuracy', color='blue', linewidth=2)
+    plt.xlabel('Epochs')
+    plt.ylabel('Metrics')
+    plt.title('Training Loss and Accuracy')
+    plt.legend()
+    plt.grid(True)
+    plt.savefig('training_loss_accuracy.png', dpi=300)
+    plt.show()
+
+    # 2. Confusion Matrix
+    cm = confusion_matrix(all_labels, all_preds)
+    plt.figure(figsize=(8,6))
+    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues")
+    plt.title('Confusion Matrix')
+    plt.xlabel('Predicted Labels')
+    plt.ylabel('True Labels')
+    plt.savefig('confusion_matrix.png', dpi=300)
+    plt.show()
+
+    # 3. Classification Report
+    report = classification_report(all_labels, all_preds, target_names=[str(i) for i in range(num_classes)])
+    print(report)
+    with open('classification_report.txt', 'w') as f:
+        f.write(report)
 
 class MinimalNetwork(nn.Module):
     def __init__(self, inChannels):
