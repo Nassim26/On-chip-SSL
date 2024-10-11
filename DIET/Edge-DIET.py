@@ -30,7 +30,7 @@ class UnnormalizeTransform:
 
 device = torch.device("cuda:2" if torch.cuda.is_available() else "cpu")
 
-num_epoch = 350
+num_epoch = 100
 batch_size = 1024
 output_size = 10384
 lr = 1e-3
