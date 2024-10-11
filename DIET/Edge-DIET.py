@@ -101,7 +101,7 @@ def train(net):
   criterion_diet = torch.nn.CrossEntropyLoss(label_smoothing=label_smoothing)
 
   with open(datetime.now().strftime("log_%Y_%m_%d_%H_%M_%S.txt"), "w") as file:
-    net.load_state_dict(torch.load("minimal_network_params.pth"))
+    # net.load_state_dict(torch.load("minimal_network_params.pth"))
     pbar = tqdm(np.arange(num_epoch))
     for epoch in pbar:
         # Train
