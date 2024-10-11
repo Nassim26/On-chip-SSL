@@ -32,7 +32,7 @@ class UnnormalizeTransform:
 
 device = torch.device("cuda:2" if torch.cuda.is_available() else "cpu")
 
-num_epoch = 15
+num_epoch = 5
 batch_size = 1024
 output_size = 10384
 lr = 1e-3
@@ -101,6 +101,7 @@ def train(net):
   criterion_diet = torch.nn.CrossEntropyLoss(label_smoothing=label_smoothing)
 
   with open(datetime.now().strftime("log_%Y_%m_%d_%H_%M_%S.txt"), "w") as file:
+    net.load_state_dict(torch.load("minimal_network_params.pth"))
     pbar = tqdm(np.arange(num_epoch))
     for epoch in pbar:
         # Train
@@ -169,6 +170,8 @@ def train(net):
     plt.show()
 
     # 2. Confusion Matrix
+    all_preds = np.concatenate(all_preds)
+    all_labels = np.concatenate(all_labels)
     cm = confusion_matrix(all_labels, all_preds)
     plt.figure(figsize=(8,6))
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues")
