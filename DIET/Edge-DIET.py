@@ -77,11 +77,11 @@ def train(net):
   # make loaders
   training_loader = DataLoader(
       training_data, batch_size=batch_size,
-      shuffle=True, drop_last=False, num_workers=2
+      shuffle=True, drop_last=False, num_workers=1
   )
   test_loader = DataLoader(
       test_data, batch_size=batch_size,
-      shuffle=False, drop_last=False, num_workers=2
+      shuffle=False, drop_last=False, num_workers=1
   )
 
   embedding_dim = net.embedding_dim
