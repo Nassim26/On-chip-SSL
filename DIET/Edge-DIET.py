@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from tqdm import tqdm
 from datetime import datetime
+from sklearn.metrics import confusion_matrix, classification_report
+import seaborn as sns
 
 def relu255(x):
     return torch.clamp(x, 0, 255)
