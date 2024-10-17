@@ -75,7 +75,7 @@ class SurrGradSpike(torch.autograd.Function):
 
 
 class QuantizeTensor(torch.autograd.Function):
-    nb = 12
+    nb = 8
     nf = 6
 
     @staticmethod
