@@ -32,7 +32,7 @@ class UnnormalizeTransform:
 
 device = torch.device("cuda:2" if torch.cuda.is_available() else "cpu")
 
-num_epoch = 25
+num_epoch = 20
 batch_size = 1024
 output_size = 10384
 lr = 1e-3
@@ -60,7 +60,7 @@ class DatasetWithIndices(Dataset):
     def __len__(self):
         return len(self.dataset)
 
-training_data = torchvision.datasets.FashionMNIST(
+training_data = torchvision.datasets.MNIST(
     train=True, download=True, root="\data",
     transform=torchvision.transforms.Compose(transform)
 )
@@ -70,7 +70,7 @@ if limit_data < np.inf:
   training_data = Subset(training_data, indices)
 
 training_data = DatasetWithIndices(training_data)
-test_data = torchvision.datasets.FashionMNIST(
+test_data = torchvision.datasets.MNIST(
     train=False, download=False, root="\data",
     transform=torchvision.transforms.Compose(transform)
 )
