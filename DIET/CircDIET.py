@@ -160,14 +160,14 @@ def train(net):
 class MinimalNetwork(nn.Module):
     def __init__(self, inChannels):
         super(MinimalNetwork, self).__init__()
-        self.hiddenLayer0 = nn.Conv2d(inChannels, 16, stride=1, padding=(1,1) bias=True)
+        self.hiddenLayer0 = nn.Conv2d(inChannels, 16, stride=1, padding=(1,1), bias=True)
         self.actFunc = ReLU255()
         self.maxPool1 = nn.MaxPool2d((2, 2), stride = 1)
         self.maxPool2 = nn.MaxPool2d((2, 2), stride = 2)
-        self.hiddenLayer1 = nn.Conv2d(16, 32, stride=1, padding=(1,1) bias=True)
+        self.hiddenLayer1 = nn.Conv2d(16, 32, stride=1, padding=(1,1), bias=True)
         self.Flatten = nn.Flatten()
-        self.hiddenLayer2 = nn.Conv2d(32, 64, stride=1, padding=(1,1) bias=True)
-        self.hiddenLayer3 = nn.Conv2d(64, 128, stride=1, padding=(1,1) bias=True)
+        self.hiddenLayer2 = nn.Conv2d(32, 64, stride=1, padding=(1,1), bias=True)
+        self.hiddenLayer3 = nn.Conv2d(64, 128, stride=1, padding=(1,1), bias=True)
         self.embedding_dim = 6400
 
     def forward(self, x):
