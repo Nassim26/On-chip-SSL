@@ -110,7 +110,7 @@ def train(net):
         for i, (x, y, n) in enumerate(training_loader):
           x = x.to(device)
           y = y.to(device).long()
-          n = n.to(device).view(-1).long()
+          n = (n % output_size).to(device).view(-1).long()
           z = net(x)
           logits_diet = W_diet(z)
           loss_diet = criterion_diet(logits_diet, n)
