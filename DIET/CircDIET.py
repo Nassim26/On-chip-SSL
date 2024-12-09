@@ -168,7 +168,7 @@ class MinimalNetwork(nn.Module):
         self.Flatten = nn.Flatten()
         self.hiddenLayer2 = nn.Conv2d(32, 64, 3, stride=1, bias=True)
         self.hiddenLayer3 = nn.Conv2d(64, 128, 3, stride=1, bias=True)
-        self.embedding_dim = 6400
+        self.embedding_dim = 9216
 
     def forward(self, x):
         x = self.hiddenLayer0(x)
