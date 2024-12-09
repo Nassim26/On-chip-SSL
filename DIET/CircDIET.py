@@ -110,7 +110,7 @@ def train(net):
         for i, (x, y, n) in enumerate(training_loader):
           x = x.to(device)
           y = y.to(device).long()
-          n = (n % output_size).to(device).view(-1).long()
+          n = (n).to(device).view(-1).long()
           z = net(x)
           logits_diet = W_diet(z)
           loss_diet = criterion_diet(logits_diet, n)
@@ -173,15 +173,14 @@ class MinimalNetwork(nn.Module):
     def forward(self, x):
         x = self.hiddenLayer0(x)
         x = self.actFunc(x)
-        x = self.maxPool2(x)
+        #x = self.maxPool2(x)
         # x = self.maxPool2(x)
         x = self.hiddenLayer1(x)
         x = self.actFunc(x)
-        x = self.maxPool1(x)
+        x = self.maxPool2(x)
         x = self.hiddenLayer2(x)
         x = self.actFunc(x)
-        x = self.maxPool1(x)
-        x = self.hiddenLayer3(x)
+  
         #x = self.actFunc(x)
         # x = self.maxPool1(x)
         x = self.Flatten(x)
