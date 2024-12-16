@@ -26,7 +26,7 @@ class ReLU255(nn.Module):
 class UnnormalizeTransform:
     def __init__(self, factor):
         self.factor = factor
-
+ 
     def __call__(self, x):
         return self.factor * x
 
@@ -110,7 +110,7 @@ def train(net):
         for i, (x, y, n) in enumerate(training_loader):
           x = x.to(device)
           y = y.to(device).long()
-          n = (n % output_size).to(device).view(-1).long()
+          n = (n % output_size).to(device).view(-1).long() # Modulo operator to enforce circular indexing! 
           z = net(x)
           logits_diet = W_diet(z)
           loss_diet = criterion_diet(logits_diet, n)
@@ -187,3 +187,13 @@ class MinimalNetwork(nn.Module):
         return x
 
 train(MinimalNetwork(1).to(device))
+
+
+'''
+TODO: 
+    - Identify network to achieve satisfactory performance on CIFAR-10 w/ normal DIET (maybe something like a standard ResNet?)
+        - CIFAR-100? 
+    - Adapt it to circular DIET; perform sensitivity analysis 
+        - Sensitive to output size? Output size w.r.t. output of encoder? Output size w.r.t. to (future) num. class labels?
+    - Separate the training of the network from its 
+''' 

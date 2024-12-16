@@ -5,7 +5,6 @@
 #
 
 import math
-
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
@@ -92,4 +91,5 @@ class QuantizeModel(nn.Module):
 
 spikeAct = SurrGradSpike.apply
 quantize = QuantizeTensor.apply
+
 
