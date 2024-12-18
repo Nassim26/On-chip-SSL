@@ -8,7 +8,13 @@ from utils import save_logs, save_model, get_datasets, get_datasets_seq
 # Circular DIET training!    #
 ##############################
 
-def train(net, device, config):
+def train(net, device, config, embedding_dim=None):
+    if embedding_dim == None:
+        try: 
+            embedding_dim = net.embedding_dim
+        except: 
+            print("Please provide the encoder output dimension.")
+
     training_data, test_data = get_datasets(config)
 
     training_loader = DataLoader(
@@ -19,11 +25,6 @@ def train(net, device, config):
         test_data, batch_size=config.batch_size,
         shuffle=False, drop_last=False, num_workers=2
     )
-
-    try:
-        embedding_dim = net.embedding_dim
-    except:
-        embedding_dim = net.fc.in_features
 
     W_probe = torch.nn.Linear(embedding_dim, config.num_classes).to(device)
     W_diet = torch.nn.Linear(embedding_dim, config.output_size, bias=False).to(device)
