@@ -24,28 +24,27 @@ class DatasetWithIndices(Dataset):
         return len(self.dataset)
 
 def get_datasets(config):
-    match config.dataset: 
-        case "MNIST": 
-            training_data = torchvision.datasets.MNIST(
-                train=True, download=True, root="./data",
-                transform=torchvision.transforms.Compose(config.transform)
-            )
-            test_data = torchvision.datasets.MNIST(
-                train=False, download=False, root="./data",
-                transform=torchvision.transforms.Compose(config.transform)
-            )
-        case "CIFAR10":
-            training_data = torchvision.datasets.CIFAR10(
-                train=True, download=True, root="./data",
-                transform=torchvision.transforms.Compose(config.transform)
-            )
-            test_data = torchvision.datasets.CIFAR10(
-                train=False, download=False, root="./data",
-                transform=torchvision.transforms.Compose(config.transform)
-            )
-        case _:
-            raise NotImplementedError
-    # End match
+    if config.dataset == "MNIST":
+        training_data = torchvision.datasets.MNIST(
+            train=True, download=True, root="./data",
+            transform=torchvision.transforms.Compose(config.transform)
+        )
+        test_data = torchvision.datasets.MNIST(
+            train=False, download=True, root="./data",
+            transform=torchvision.transforms.Compose(config.transform)
+        )
+    elif config.dataset == "CIFAR10":
+        training_data = torchvision.datasets.CIFAR10(
+            train=True, download=True, root="./data",
+            transform=torchvision.transforms.Compose(config.transform)
+        )
+        test_data = torchvision.datasets.CIFAR10(
+            train=False, download=True, root="./data",
+            transform=torchvision.transforms.Compose(config.transform)
+        )
+    else:
+        print(f"Dataset '{config.dataset}' is not implemented.")
+        raise NotImplementedError
 
     if config.limit_data < float('inf'):
         indices = torch.arange(config.limit_data)
