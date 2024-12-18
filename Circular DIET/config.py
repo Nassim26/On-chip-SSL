@@ -12,7 +12,7 @@ class Config:
     def __init__(self):
         self.num_epoch = 25
         self.batch_size = 1024
-        self.output_size = 25 * self.batch_size
+        self.output_size = 10
         self.lr = 1e-3
         self.weight_decay = 0.05
         self.label_smoothing = 0.8
