@@ -7,10 +7,10 @@ from layers import ReLU255, QConv2D
 class QuantizedNetwork(nn.Module):
     def __init__(self, in_channels, input_shape=(1, 28, 28)):
         super(QuantizedNetwork, self).__init__()
-        self.hiddenLayer0 = QConv2D(in_channels, 16, 3, stride=1, padding=(2, 2), bias=True)
-        self.hiddenLayer1 = QConv2D(16, 32, 3, stride=1, bias=True)
-        self.hiddenLayer2 = QConv2D(32, 64, 3, stride=1, bias=True)
-        self.hiddenLayer3 = QConv2D(64, 128, 3, stride=1, bias=True)
+        self.hiddenLayer0 = QConv2D(in_channels, 16, bias=True)
+        self.hiddenLayer1 = QConv2D(16, 32, bias=True)
+        self.hiddenLayer2 = QConv2D(32, 64, bias=True)
+        self.hiddenLayer3 = QConv2D(64, 128, bias=True)
         self.actFunc = ReLU255()
         self.maxPool2 = nn.MaxPool2d((2, 2), stride=2)
         self.Flatten = nn.Flatten()
