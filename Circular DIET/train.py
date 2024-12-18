@@ -20,8 +20,13 @@ def train(net, device, config):
         shuffle=False, drop_last=False, num_workers=2
     )
 
-    W_probe = torch.nn.Linear(net.embedding_dim, config.num_classes).to(device)
-    W_diet = torch.nn.Linear(net.embedding_dim, config.output_size, bias=False).to(device)
+    try:
+        embedding_dim = net.embedding_dim
+    except:
+        embedding_dim = net.fc.in_features
+
+    W_probe = torch.nn.Linear(embedding_dim, config.num_classes).to(device)
+    W_diet = torch.nn.Linear(embedding_dim, config.output_size, bias=False).to(device)
 
     optimizer = torch.optim.AdamW(
         list(net.parameters()) + list(W_probe.parameters()) + list(W_diet.parameters()),
