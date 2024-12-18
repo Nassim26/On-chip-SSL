@@ -84,12 +84,9 @@ class QConv2D(nn.Module):
     def forward(self, input):
         return FConv2D_3x3.apply(input, self.weight, self.bias)
 
-def relu255(x):
-    return torch.clamp(x, 0, 255)
-
 class ReLU255(nn.Module):
     def __init__(self):
         super(ReLU255, self).__init__()
 
     def forward(self, x):
-        return relu255(x)
+        return torch.clamp(x, 0, 255)

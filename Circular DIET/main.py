@@ -4,7 +4,8 @@ from train import train, train_DIET_standard
 import torch
 
 if __name__ == "__main__":
-    device = torch.device("cuda:2" if torch.cuda.is_available() else "cpu")
+    #device = torch.device("cuda:2" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cpu")
     config = Config()
     net = QuantizedNetwork(config.in_channels).to(device)
     train_DIET_standard(net, device, config)
