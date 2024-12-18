@@ -170,7 +170,7 @@ def train_DIET_standard(net, device, config):
     )
 
     W_probe = torch.nn.Linear(net.embedding_dim, config.num_classes).to(device)
-    W_diet = torch.nn.Linear(net.embedding_dim, config.output_size, bias=False).to(device)
+    W_diet = torch.nn.Linear(net.embedding_dim, len(training_data), bias=False).to(device)
 
     optimizer = torch.optim.AdamW(
         list(net.parameters()) + list(W_probe.parameters()) + list(W_diet.parameters()),

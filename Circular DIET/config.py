@@ -17,7 +17,7 @@ class Config:
         self.weight_decay = 0.05
         self.label_smoothing = 0.8
         self.num_classes = 10
-        self.limit_data = 2 * self.batch_size  # Use `float('inf')` for full dataset
+        self.limit_data = 25 * self.batch_size  # Use `float('inf')` for full dataset
         self.in_channels = 1
         self.transform = [
             torchvision.transforms.ToTensor(),
