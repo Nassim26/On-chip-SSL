@@ -36,3 +36,12 @@ class QuantizedNetwork(nn.Module):
 class LargeNetwork(nn.Module):
     def __init__(self, in_channels, input_shape):
         super(LargeNetwork, self).__init__()
+
+class StandardNetwork(nn.Module):
+    def __init__(self, in_channels, input_shape=(1,28,28)):
+        super(StandardNetwork, self).__init__()
+        self.Layers = [
+            nn.Conv2d(in_channels, 16, kernel_size=3, strid=1, padding=(2,2), bias=True),
+            nn.ReLU()
+        ]
+        
