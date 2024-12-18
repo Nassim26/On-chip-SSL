@@ -156,3 +156,65 @@ def train_sequential(net, device, config):
             run_acc_test.append((logits_probe.argmax(1) == y).float().mean().item())
 
     print(f"Test Accuracy = {np.mean(run_acc_test):.4f}")
+
+def train_DIET_standard(net, device, config):
+    training_data, test_data = get_datasets(config)
+
+    training_loader = DataLoader(
+        training_data, batch_size=config.batch_size,
+        shuffle=True, drop_last=False, num_workers=2
+    )
+    test_loader = DataLoader(
+        test_data, batch_size=config.batch_size,
+        shuffle=False, drop_last=False, num_workers=2
+    )
+
+    W_probe = torch.nn.Linear(net.embedding_dim, config.num_classes).to(device)
+    W_diet = torch.nn.Linear(net.embedding_dim, config.output_size, bias=False).to(device)
+
+    optimizer = torch.optim.AdamW(
+        list(net.parameters()) + list(W_probe.parameters()) + list(W_diet.parameters()),
+        lr=config.lr, weight_decay=config.weight_decay
+    )
+
+    criterion = torch.nn.CrossEntropyLoss(label_smoothing=0.0)
+    criterion_diet = torch.nn.CrossEntropyLoss(label_smoothing=config.label_smoothing)
+
+    pbar = tqdm(np.arange(num_epoch))
+    for epoch in pbar:
+        # Train
+        net.train()
+        run_loss_diet, run_acc = [], []
+        for i, (x, y, n) in enumerate(training_loader):
+            x = x.to(device)
+            y = y.to(device)
+            n = n.to(device).view(-1)
+            z = net(x)
+            logits_diet = W_diet(z)
+            loss_diet = criterion_diet(logits_diet, n)
+            logits_probe = W_probe(z.detach())
+            loss_probe = criterion(logits_probe, y)
+            loss = loss_diet + loss_probe
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            run_loss_diet.append(loss_diet.item())
+            run_acc.append(torch.mean((y == logits_probe.argmax(1)).to(float)).item())
+
+            # logging
+            pbar.set_description('epoch: %s/%s, iter: %s/%s, loss_diet=%.4e, accuracy=%.4f' % (
+                epoch, num_epoch, i, len(training_loader),
+                np.mean(run_loss_diet), np.mean(run_acc)))
+    print('\nTraining done.')
+
+    # Test
+    net.eval()
+    with torch.no_grad():
+        run_acc_test = []
+        for j, (x, y) in enumerate(test_loader):
+            x = x.to(device)
+            y = y.to(device)
+            z = net(x)
+            logits_probe = W_probe(z.detach())
+            run_acc_test.append(torch.mean((y == logits_probe.argmax(1)).to(float)).item())
+    print('Test accuracy=%.4f' % np.mean(run_acc_test))
