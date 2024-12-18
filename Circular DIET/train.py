@@ -4,6 +4,10 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 from utils import save_logs, save_model, get_datasets, get_datasets_seq
 
+##############################
+# Circular DIET training!    #
+##############################
+
 def train(net, device, config):
     training_data, test_data = get_datasets(config)
 
@@ -65,6 +69,9 @@ def train(net, device, config):
 
     save_model(net, "params.pth")
 
+##############################
+# Sequential DIET training!  #
+##############################
 
 def train_sequential(net, device, config):
     # Data loaders
@@ -156,6 +163,10 @@ def train_sequential(net, device, config):
             run_acc_test.append((logits_probe.argmax(1) == y).float().mean().item())
 
     print(f"Test Accuracy = {np.mean(run_acc_test):.4f}")
+
+##############################
+# Standard DIET training!    #
+############################## 
 
 def train_DIET_standard(net, device, config):
     training_data, test_data = get_datasets(config)

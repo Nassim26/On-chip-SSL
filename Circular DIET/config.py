@@ -19,7 +19,8 @@ class Config:
         self.num_classes = 10
         self.limit_data = 25 * self.batch_size  # Use `float('inf')` for full dataset
         self.in_channels = 1
+        self.dataset = "CIFAR10"
         self.transform = [
             torchvision.transforms.ToTensor(),
-            UnnormalizeTransform(255),
+            #UnnormalizeTransform(255),
         ]

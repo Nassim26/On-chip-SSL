@@ -24,21 +24,34 @@ class DatasetWithIndices(Dataset):
         return len(self.dataset)
 
 def get_datasets(config):
-    training_data = torchvision.datasets.MNIST(
-        train=True, download=True, root="./data",
-        transform=torchvision.transforms.Compose(config.transform)
-    )
+    match config.dataset: 
+        case "MNIST": 
+            training_data = torchvision.datasets.MNIST(
+                train=True, download=True, root="./data",
+                transform=torchvision.transforms.Compose(config.transform)
+            )
+            test_data = torchvision.datasets.MNIST(
+                train=False, download=False, root="./data",
+                transform=torchvision.transforms.Compose(config.transform)
+            )
+        case "CIFAR10":
+            training_data = torchvision.datasets.CIFAR10(
+                train=True, download=True, root="./data",
+                transform=torchvision.transforms.Compose(config.transform)
+            )
+            test_data = torchvision.datasets.CIFAR10(
+                train=False, download=False, root="./data",
+                transform=torchvision.transforms.Compose(config.transform)
+            )
+        case _:
+            raise NotImplementedError
+    # End match
 
     if config.limit_data < float('inf'):
         indices = torch.arange(config.limit_data)
         training_data = Subset(training_data, indices)
 
     training_data = DatasetWithIndices(training_data)
-
-    test_data = torchvision.datasets.MNIST(
-        train=False, download=False, root="./data",
-        transform=torchvision.transforms.Compose(config.transform)
-    )
 
     return training_data, test_data
 
