@@ -180,7 +180,7 @@ def train_DIET_standard(net, device, config):
     criterion = torch.nn.CrossEntropyLoss(label_smoothing=0.0)
     criterion_diet = torch.nn.CrossEntropyLoss(label_smoothing=config.label_smoothing)
 
-    pbar = tqdm(np.arange(num_epoch))
+    pbar = tqdm(np.arange(config.num_epoch))
     for epoch in pbar:
         # Train
         net.train()
