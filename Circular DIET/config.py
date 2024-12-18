@@ -10,9 +10,9 @@ class UnnormalizeTransform:
 
 class Config:
     def __init__(self):
-        self.num_epoch = 50
+        self.num_epoch = 25
         self.batch_size = 1024
-        self.output_size = 100
+        self.output_size = 1024
         self.lr = 1e-3
         self.weight_decay = 0.05
         self.label_smoothing = 0.8
