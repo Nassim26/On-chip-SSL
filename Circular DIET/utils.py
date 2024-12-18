@@ -41,3 +41,25 @@ def get_datasets(config):
     )
 
     return training_data, test_data
+
+def get_datasets_seq(config):
+    training_data = torchvision.datasets.MNIST(
+        train=True, download=True, root='./data',
+        transform=torchvision.transforms.Compose(config.transform)
+    )
+
+    if config.limit_data < float('inf'): 
+        indices = torch.arange(config.limit_data) 
+        training_data = Subset(training_data, indices) 
+
+    training_data = DatasetWithIndices(training_data)
+
+    probe_training_data = torchvision.datasets.MNIST(
+        train=True, download=True, root='./data',
+        transform=torchvision.transforms.Compose(config.transform)
+    )
+
+    test_data = torchvision.datasets.MNIST(
+        train=False, download=False, root='./data',
+        transform=torchvision.transforms.Compose(config.transform)
+    )

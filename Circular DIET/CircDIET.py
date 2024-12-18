@@ -195,5 +195,5 @@ TODO:
         - CIFAR-100? 
     - Adapt it to circular DIET; perform sensitivity analysis 
         - Sensitive to output size? Output size w.r.t. output of encoder? Output size w.r.t. to (future) num. class labels?
-    - Separate the training of the network from its 
+    - Separate the training of the encoder network from training of linear probe
 ''' 

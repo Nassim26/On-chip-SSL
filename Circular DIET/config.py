@@ -1,6 +1,13 @@
 import torch
 import torchvision
 
+class UnnormalizeTransform:
+    def __init__(self, factor):
+        self.factor = factor
+
+    def __call__(self, x):
+        return self.factor * x
+
 class Config:
     def __init__(self):
         self.num_epoch = 20
