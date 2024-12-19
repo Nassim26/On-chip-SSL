@@ -27,20 +27,20 @@ def get_datasets(config):
     if config.dataset == "MNIST":
         training_data = torchvision.datasets.MNIST(
             train=True, download=True, root="./data",
-            transform=torchvision.transforms.Compose(config.transform)
+            transform=torchvision.transforms.Compose(config.train_transform)
         )
         test_data = torchvision.datasets.MNIST(
             train=False, download=True, root="./data",
-            transform=torchvision.transforms.Compose(config.transform)
+            transform=torchvision.transforms.Compose(config.test_transform)
         )
     elif config.dataset == "CIFAR10":
         training_data = torchvision.datasets.CIFAR10(
             train=True, download=True, root="./data",
-            transform=torchvision.transforms.Compose(config.transform)
+            transform=torchvision.transforms.Compose(config.train_transform)
         )
         test_data = torchvision.datasets.CIFAR10(
             train=False, download=True, root="./data",
-            transform=torchvision.transforms.Compose(config.transform)
+            transform=torchvision.transforms.Compose(config.test_transform)
         )
     else:
         print(f"Dataset '{config.dataset}' is not implemented.")
@@ -57,7 +57,7 @@ def get_datasets(config):
 def get_datasets_seq(config):
     training_data = torchvision.datasets.MNIST(
         train=True, download=True, root='./data',
-        transform=torchvision.transforms.Compose(config.transform)
+        transform=torchvision.transforms.Compose(config.train_transform)
     )
 
     if config.limit_data < float('inf'): 
@@ -68,10 +68,10 @@ def get_datasets_seq(config):
 
     probe_training_data = torchvision.datasets.MNIST(
         train=True, download=True, root='./data',
-        transform=torchvision.transforms.Compose(config.transform)
+        transform=torchvision.transforms.Compose(config.test_transform)
     )
 
     test_data = torchvision.datasets.MNIST(
         train=False, download=False, root='./data',
-        transform=torchvision.transforms.Compose(config.transform)
+        transform=torchvision.transforms.Compose(config.test_transform)
     )
