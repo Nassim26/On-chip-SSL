@@ -295,9 +295,6 @@ def train_simcirc(net, device, config, embedding_dim=None):
             # print(torch.argmax(logits_diet, dim=1).shape, torch.argmax(logits_diet, dim=1))
             n = n.to(device).view(-1).long()  # Ensure `n` is on the correct device and has the expected shape
 
-            # Perform element-wise condition
-            mask = n == n  # This creates a boolean tensor with the same shape as `n`
-
             # Apply the condition to `n`
             n = torch.argmax(logits_diet, dim=1) 
             # print(n.shape, n, '\n\n\n\n\n')    
