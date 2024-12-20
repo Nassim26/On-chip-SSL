@@ -3,6 +3,7 @@ import numpy as np
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from utils import save_logs, save_model, get_datasets, get_datasets_seq
+import matplotlib.pyplot as plt
 
 ##############################
 # Circular DIET training!    #
@@ -264,7 +265,14 @@ def train_simcirc(net, device, config, embedding_dim=None):
     )
 
     W_probe = torch.nn.Linear(embedding_dim, config.num_classes).to(device)
-    W_diet = torch.nn.Linear(embedding_dim, config.output_size, bias=False).to(device)
+    ## NEW!!
+    print("Embedding_dim size:", embedding_dim)
+    W_diet = torch.nn.Linear(embedding_dim, embedding_dim, bias=False).to(device)
+
+    print("Check this out!")
+    plt.stem(np.linalg.eig(W_diet.detach().numpy())[0])
+    plt.show()
+    ### End new....
 
     optimizer = torch.optim.AdamW(
         list(net.parameters()) + list(W_probe.parameters()) + list(W_diet.parameters()),
@@ -288,7 +296,7 @@ def train_simcirc(net, device, config, embedding_dim=None):
             n = n.to(device).view(-1).long()  # Ensure `n` is on the correct device and has the expected shape
 
             # Perform element-wise condition
-            mask = n < config.output_size  # This creates a boolean tensor with the same shape as `n`
+            mask = n == n  # This creates a boolean tensor with the same shape as `n`
 
             # Apply the condition to `n`
             n = torch.where(mask, n, torch.argmax(logits_diet, dim=1))  
@@ -322,5 +330,8 @@ def train_simcirc(net, device, config, embedding_dim=None):
         all_labels.append(y.cpu().numpy())
         run_acc_test.append(torch.mean((y == logits_probe.argmax(1)).to(float)).item())
     print('Test accuracy=%.4f' % np.mean(run_acc_test))
+    ### Begin new new!!!!
+    plt.stem(np.linalg.eig(W_diet.detach().numpy())[0])
+    ### End new new....
 
     save_model(net, "params.pth")
