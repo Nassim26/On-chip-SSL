@@ -15,10 +15,10 @@ if __name__ == "__main__":
     embedding_dim = net.fc.in_features
     net.fc = torch.nn.Identity()
     # ---
-    state_dict = torch.load('cifar_params.pth')
-    net.load_state_dict(state_dict)
+    #state_dict = torch.load('cifar_params.pth')
+    #net.load_state_dict(state_dict)
     net.to(device)
-    train_DIET_standard(net, device, config, embedding_dim)
+    train(net, device, config, embedding_dim)
     # train(net, device, config, net.embedding_dim)
     # train(net, device, config)
     # train_DIET_standard(net, device, config)
