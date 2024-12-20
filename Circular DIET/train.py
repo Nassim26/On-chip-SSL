@@ -299,7 +299,7 @@ def train_simcirc(net, device, config, embedding_dim=None):
             mask = n == n  # This creates a boolean tensor with the same shape as `n`
 
             # Apply the condition to `n`
-            n = torch.where(mask, n, torch.argmax(logits_diet, dim=1))  
+            n = torch.argmax(logits_diet, dim=1) 
             # print(n.shape, n, '\n\n\n\n\n')    
             # print(torch.unique(n))      
             # print("\n\nMax:", torch.max(n), '\n\n\n')
