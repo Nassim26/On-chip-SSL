@@ -18,7 +18,7 @@ if __name__ == "__main__":
     #state_dict = torch.load('cifar_params.pth')
     #net.load_state_dict(state_dict)
     net.to(device)
-    train_simcirc(net, device, config, embedding_dim)
+    train_simcirc(net, device, config, net.embedding_dim)
     # train(net, device, config, net.embedding_dim)
     # train(net, device, config)
     # train_DIET_standard(net, device, config)
