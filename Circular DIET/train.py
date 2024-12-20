@@ -294,6 +294,7 @@ def train_simcirc(net, device, config, embedding_dim=None):
             n = torch.where(mask, n, torch.argmax(logits_diet, dim=1))  
             print(n.shape, n, '\n\n\n\n\n')    
             print(torch.unique(n))      
+            print("\n\nMax:", torch.max(n), '\n\n\n')
             loss_diet = criterion_diet(logits_diet, n)
             logits_probe = W_probe(z.detach())
             loss_probe = criterion(logits_probe, y)
