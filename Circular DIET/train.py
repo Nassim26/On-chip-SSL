@@ -288,13 +288,13 @@ def train_simcirc(net, device, config, embedding_dim=None):
             n = n.to(device).view(-1).long()  # Ensure `n` is on the correct device and has the expected shape
 
             # Perform element-wise condition
-            mask = n <= config.output_size  # This creates a boolean tensor with the same shape as `n`
+            mask = n < config.output_size  # This creates a boolean tensor with the same shape as `n`
 
             # Apply the condition to `n`
             n = torch.where(mask, n, torch.argmax(logits_diet, dim=1))  
-            print(n.shape, n, '\n\n\n\n\n')    
-            print(torch.unique(n))      
-            print("\n\nMax:", torch.max(n), '\n\n\n')
+            # print(n.shape, n, '\n\n\n\n\n')    
+            # print(torch.unique(n))      
+            # print("\n\nMax:", torch.max(n), '\n\n\n')
             loss_diet = criterion_diet(logits_diet, n)
             logits_probe = W_probe(z.detach())
             loss_probe = criterion(logits_probe, y)
