@@ -42,6 +42,24 @@ def get_datasets(config):
             train=False, download=True, root="./data",
             transform=torchvision.transforms.Compose(config.test_transform)
         )
+    elif config.dataset == "KMNIST":
+        training_data = torchvision.datasets.KMNIST(
+            train=True, download=True, root="./data",
+            transform=torchvision.transforms.Compose(config.train_transform)
+        )
+        test_data = torchvision.datasets.KMNIST(
+            train=False, download=True, root="./data",
+            transform=torchvision.transforms.Compose(config.test_transform)
+        )
+    elif config.dataset == "FashionMNIST":
+        training_data = torchvision.datasets.FashionMNIST(
+            train=True, download=True, root="./data",
+            transform=torchvision.transforms.Compose(config.train_transform)
+        )
+        test_data = torchvision.datasets.FashionMNIST(
+            train=False, download=True, root="./data",
+            transform=torchvision.transforms.Compose(config.test_transform)
+        )
     else:
         print(f"Dataset '{config.dataset}' is not implemented.")
         raise NotImplementedError

@@ -11,7 +11,7 @@ class UnnormalizeTransform:
 
 class Config:
     def __init__(self):
-        self.num_epoch = 10
+        self.num_epoch = 20
         self.batch_size = 1024
         self.output_size = 512
         self.lr = 1e-3
@@ -20,8 +20,8 @@ class Config:
         self.num_classes = 10
         self.limit_data = np.inf  # Use `np.inf` for full dataset
         self.in_channels = 1
-        self.dataset = "CIFAR10"
-        self.input_shape = (3, 32, 32)
+        self.dataset = "FashionMNIST"
+        self.input_shape = (1, 28, 28)
         self.test_transform = [
             torchvision.transforms.ToTensor(),
             #UnnormalizeTransform(255),
