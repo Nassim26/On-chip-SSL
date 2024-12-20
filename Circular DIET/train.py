@@ -282,14 +282,16 @@ def train_simcirc(net, device, config, embedding_dim=None):
             x, y,  = x.to(device), y.to(device)
             z = net(x)
             logits_diet = W_diet(z)
-            print(n.view(-1).long().shape, n.view(-1).long(), '\n\n\n')
-            print("Logits:", logits_diet.shape, logits_diet, "\n\n\n\n")
-            print(torch.argmax(logits_diet, dim=1).shape, torch.argmax(logits_diet, dim=1))
-            if n <= config.output_size:
-                n = n.to(device).view(-1).long()
-            else:
-                n = torch.argmax(logits_diet).to(device).view(-1).long()
-            
+            # print(n.view(-1).long().shape, n.view(-1).long(), '\n\n\n')
+            # print("Logits:", logits_diet.shape, logits_diet, "\n\n\n\n")
+            # print(torch.argmax(logits_diet, dim=1).shape, torch.argmax(logits_diet, dim=1))
+            n = n.to(device).view(-1).long()  # Ensure `n` is on the correct device and has the expected shape
+
+            # Perform element-wise condition
+            mask = n <= config.output_size  # This creates a boolean tensor with the same shape as `n`
+
+            # Apply the condition to `n`
+            n = torch.where(mask, n, torch.argmax(logits_diet, dim=1))            
             loss_diet = criterion_diet(logits_diet, n)
             logits_probe = W_probe(z.detach())
             loss_probe = criterion(logits_probe, y)
