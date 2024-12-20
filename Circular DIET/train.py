@@ -283,7 +283,7 @@ def train_simcirc(net, device, config, embedding_dim=None):
             z = net(x)
             logits_diet = W_diet(z)
             print(n.view(-1).long(), '\n\n\n')
-            print("Logits:", torch.shape(logits_diet), logits_diet, "\n\n\n\n")
+            print("Logits:", logits_diet.shape, logits_diet, "\n\n\n\n")
             print(torch.argmax(logits_diet))
             if n <= config.output_size:
                 n = n.to(device).view(-1).long()
