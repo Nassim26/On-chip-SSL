@@ -270,7 +270,7 @@ def train_simcirc(net, device, config, embedding_dim=None):
     W_diet = torch.nn.Linear(embedding_dim, embedding_dim, bias=False).to(device)
 
     print("Check this out!")
-    plt.stem(np.linalg.eig(W_diet.numpy())[0])
+    plt.stem(np.linalg.eig(W_diet.weight.detach().numpy())[0])
     plt.show()
     ### End new....
 
@@ -331,7 +331,7 @@ def train_simcirc(net, device, config, embedding_dim=None):
         run_acc_test.append(torch.mean((y == logits_probe.argmax(1)).to(float)).item())
     print('Test accuracy=%.4f' % np.mean(run_acc_test))
     ### Begin new new!!!!
-    plt.stem(np.linalg.eig(W_diet.numpy())[0])
+    plt.stem(np.linalg.eig(W_diet.weight.detach().numpy())[0])
     ### End new new....
 
     save_model(net, "params.pth")
