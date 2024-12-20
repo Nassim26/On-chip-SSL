@@ -1,6 +1,6 @@
 from config import Config
 from models import QuantizedNetwork
-from train import train, train_DIET_standard
+from train import train, train_DIET_standard, train_simcirc
 import torch
 import torchvision
 
