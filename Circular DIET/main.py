@@ -16,7 +16,7 @@ if __name__ == "__main__":
     net.fc = torch.nn.Identity()
     # ---
     state_dict = torch.load('cifar_params.pth')
-    net.parameters = state_dict
+    net.load_state_dict(state_dict)
     net.to(device)
     train_DIET_standard(net, device, config, embedding_dim)
     # train(net, device, config, net.embedding_dim)
