@@ -26,23 +26,23 @@ class Config:
             torchvision.transforms.ToTensor(),
             #UnnormalizeTransform(255),
         ]
-        self.train_transform = self._set_train_transform(augmentation_strenght=2)
+        self.train_transform = self._set_train_transform(augmentation_strength=2) 
         
-    def _set_train_transform(self, augmentation_strenght):
+    def _set_train_transform(self, augmentation_strength):
         train_transform = self.test_transform
-        if augmentation_strenght > 0:
+        if augmentation_strength > 0:
             train_transform += [
                 torchvision.transforms.RandomResizedCrop(self.input_shape[1], antialias=True),
                 torchvision.transforms.RandomHorizontalFlip(),
             ]
-        if augmentation_strenght > 1:
+        if augmentation_strength > 1:
             train_transform += [
                 torchvision.transforms.RandomApply(torch.nn.ModuleList(
                     [torchvision.transforms.ColorJitter(0.4, 0.4, 0.4, 0.2)]
                 ), p=0.3),
                 torchvision.transforms.RandomGrayscale(p=0.2)
             ]
-        if augmentation_strenght > 2: 
+        if augmentation_strength > 2: 
             train_transform += [
                 torchvision.transforms.RandomApply(torch.nn.ModuleList(
                     [torchvision.transforms.GaussianBlur((3, 3), (1.0, 2.0))]
