@@ -70,26 +70,71 @@ def get_datasets(config):
 
     training_data = DatasetWithIndices(training_data)
 
+    total_size = len(training_data)
+    train_enc_size = int(0.7 * total_size)
+    train_cls_size = int(0.2 * total_size)
+    test_size = total_size - train_cls_size - train_enc_size
+
+    train_encoder_set, train_classifier_set, test_set = random_split(
+        training_data, [train_enc_size, train_cls_size, test_size]
+    )
+
     return training_data, test_data
 
 def get_datasets_seq(config):
-    training_data = torchvision.datasets.MNIST(
-        train=True, download=True, root='./data',
-        transform=torchvision.transforms.Compose(config.train_transform)
-    )
+    if config.dataset == "MNIST":
+        training_data = torchvision.datasets.MNIST(
+            train=True, download=True, root="./data",
+            transform=torchvision.transforms.Compose(config.train_transform)
+        )
+        test_data = torchvision.datasets.MNIST(
+            train=False, download=True, root="./data",
+            transform=torchvision.transforms.Compose(config.test_transform)
+        )
+    elif config.dataset == "CIFAR10":
+        training_data = torchvision.datasets.CIFAR10(
+            train=True, download=True, root="./data",
+            transform=torchvision.transforms.Compose(config.train_transform)
+        )
+        test_data = torchvision.datasets.CIFAR10(
+            train=False, download=True, root="./data",
+            transform=torchvision.transforms.Compose(config.test_transform)
+        )
+    elif config.dataset == "KMNIST":
+        training_data = torchvision.datasets.KMNIST(
+            train=True, download=True, root="./data",
+            transform=torchvision.transforms.Compose(config.train_transform)
+        )
+        test_data = torchvision.datasets.KMNIST(
+            train=False, download=True, root="./data",
+            transform=torchvision.transforms.Compose(config.test_transform)
+        )
+    elif config.dataset == "FashionMNIST":
+        training_data = torchvision.datasets.FashionMNIST(
+            train=True, download=True, root="./data",
+            transform=torchvision.transforms.Compose(config.train_transform)
+        )
+        test_data = torchvision.datasets.FashionMNIST(
+            train=False, download=True, root="./data",
+            transform=torchvision.transforms.Compose(config.test_transform)
+        )
+    else:
+        print(f"Dataset '{config.dataset}' is not implemented.")
+        raise NotImplementedError
 
-    if config.limit_data < float('inf'): 
-        indices = torch.arange(config.limit_data) 
-        training_data = Subset(training_data, indices) 
+    if config.limit_data < float('inf'):
+        indices = torch.arange(config.limit_data)
+        training_data = Subset(training_data, indices)
 
     training_data = DatasetWithIndices(training_data)
 
-    probe_training_data = torchvision.datasets.MNIST(
-        train=True, download=True, root='./data',
-        transform=torchvision.transforms.Compose(config.test_transform)
+    total_size = len(training_data)
+    train_enc_size = int(0.7 * total_size)
+    train_cls_size = int(0.2 * total_size)
+    test_size = total_size - train_cls_size - train_enc_size
+
+    train_encoder_set, train_classifier_set, test_set = random_split(
+        training_data, [train_enc_size, train_cls_size, test_size]
     )
 
-    test_data = torchvision.datasets.MNIST(
-        train=False, download=False, root='./data',
-        transform=torchvision.transforms.Compose(config.test_transform)
-    )
+    return train_encoder_set, train_classifier_set, test_set
