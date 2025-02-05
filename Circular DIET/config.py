@@ -20,13 +20,13 @@ class Config:
         self.num_classes = 10
         self.limit_data = np.inf  # Use `np.inf` for full dataset
         self.in_channels = 1
-        self.dataset = "FashionMNIST"
-        self.input_shape = (1, 28, 28)
+        self.dataset = "CIFAR10"
+        self.input_shape = (3, 32, 32)
         self.test_transform = [
             torchvision.transforms.ToTensor(),
-            UnnormalizeTransform(255),
+            # UnnormalizeTransform(255),
         ]
-        self.train_transform = self._set_train_transform(augmentation_strength=0) 
+        self.train_transform = self._set_train_transform(augmentation_strength=2) 
         
     def _set_train_transform(self, augmentation_strength):
         train_transform = self.test_transform
