@@ -26,7 +26,7 @@ class Config:
             torchvision.transforms.ToTensor(),
             UnnormalizeTransform(255),
         ]
-        self.train_transform = self._set_train_transform(augmentation_strength=2) 
+        self.train_transform = self._set_train_transform(augmentation_strength=0) 
         
     def _set_train_transform(self, augmentation_strength):
         train_transform = self.test_transform
