@@ -47,7 +47,7 @@ def train_random(net, device, config, embedding_dim=None):
             z = net(x)
             logits_diet = W_diet(z)
             n = n.view(-1).long()  # Ensure `n` is on the correct device and has the expected shape
-            
+            print(n)
             generator = torch.Generator(device='cpu')
             generator.manual_seed(int(n))
             target = torch.rand(size=torch.size(logits_diet), generator=generator).to(device)
