@@ -75,9 +75,9 @@ def get_datasets(config):
     train_cls_size = int(0.2 * total_size)
     test_size = total_size - train_cls_size - train_enc_size
 
-    train_encoder_set, train_classifier_set, test_set = random_split(
-        training_data, [train_enc_size, train_cls_size, test_size]
-    )
+    # train_encoder_set, train_classifier_set, test_set = random_split(
+    #     training_data, [train_enc_size, train_cls_size, test_size]
+    # )
 
     return training_data, test_data
 
