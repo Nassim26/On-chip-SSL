@@ -11,7 +11,7 @@ class UnnormalizeTransform:
 
 class Config:
     def __init__(self):
-        self.num_epoch = 20
+        self.num_epoch = 200
         self.batch_size = 1024
         self.output_size = 512
         self.lr = 1e-3
