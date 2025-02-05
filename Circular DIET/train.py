@@ -75,6 +75,7 @@ def train(net, device, config, embedding_dim=None):
     print('Test accuracy=%.4f' % np.mean(run_acc_test))
 
     save_model(net, "params.pth")
+    return run_loss_diet, run_acc, run_acc_test
 
 ##############################
 # Sequential DIET training!  #
@@ -170,6 +171,7 @@ def train_sequential(net, device, config):
             run_acc_test.append((logits_probe.argmax(1) == y).float().mean().item())
 
     print(f"Test Accuracy = {np.mean(run_acc_test):.4f}")
+    return run_loss_diet, run_acc, run_acc_test
 
 ##############################
 # Standard DIET training!    #
@@ -241,6 +243,7 @@ def train_DIET_standard(net, device, config, embedding_dim=None):
     print('Test accuracy=%.4f' % np.mean(run_acc_test))
 
     save_model(net, "cifar_params.pth")
+    return run_loss_diet, run_acc, run_acc_test
 
 ##############################
 # SimCirc DIET               #
@@ -332,3 +335,4 @@ def train_simcirc(net, device, config, embedding_dim=None):
     ### End new new....
 
     save_model(net, "params.pth")
+    return run_loss_diet, run_acc, run_acc_test
