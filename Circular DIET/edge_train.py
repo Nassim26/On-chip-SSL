@@ -51,7 +51,7 @@ def train_random(net, device, config, embedding_dim=None):
             target = torch.stack([
                 torch.rand(1, generator=torch.Generator().manual_seed(int(seed)))
                 for seed in n
-            ]).squeeze().to(device)
+            ]).squeeze().type(torch.LongTensor).to(device)
 
             loss_diet = criterion_diet(logits_diet, target)
             logits_probe = W_probe(z.detach())
