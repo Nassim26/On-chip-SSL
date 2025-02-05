@@ -45,7 +45,10 @@ def train(net, device, config, embedding_dim=None):
         for x, y, n in tqdm(training_loader, desc=f"Epoch {epoch+1}/{config.num_epoch}"):
             x, y, n = x.to(device), y.to(device), (n % config.output_size).to(device).view(-1).long()
             z = net(x)
+            print("Input:", x, "\n\n")
+            print("n:", n, "\n\n")
             logits_diet = W_diet(z)
+            print("Logits after DIET matrix:", logits_diet, "\n\n")
             loss_diet = criterion_diet(logits_diet, n)
             logits_probe = W_probe(z.detach())
             loss_probe = criterion(logits_probe, y)

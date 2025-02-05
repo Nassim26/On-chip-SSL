@@ -28,7 +28,7 @@ def train_random(net, device, config, embedding_dim=None):
 
     W_probe = torch.nn.Linear(embedding_dim, config.num_classes).to(device)
     print("Embedding_dim size:", embedding_dim)
-    W_diet = torch.nn.Linear(embedding_dim, embedding_dim, bias=False).to(device)
+    W_diet = torch.nn.Linear(embedding_dim, config.output_size, bias=False).to(device)
 
     optimizer = torch.optim.AdamW(
         list(net.parameters()) + list(W_probe.parameters()) + list(W_diet.parameters()),
