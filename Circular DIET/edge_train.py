@@ -46,11 +46,11 @@ def train_random(net, device, config, embedding_dim=None):
             x, y = x.to(device), y.to(device)
             z = net(x)
             logits_diet = W_diet(z)
-            n = n.to(device).view(-1).long()  # Ensure `n` is on the correct device and has the expected shape
+            n = n.view(-1).long()  # Ensure `n` is on the correct device and has the expected shape
             
-            generator = torch.Generator(device='cuda')
+            generator = torch.Generator(device='cpu')
             generator.manual_seed(int(n))
-            target = torch.rand(size=torch.size(logits_diet))
+            target = torch.rand(size=torch.size(logits_diet), generator=generator).to(device)
 
             loss_diet = criterion_diet(logits_diet, target)
             logits_probe = W_probe(z.detach())
