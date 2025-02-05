@@ -24,7 +24,7 @@ class Config:
         self.input_shape = (1, 28, 28)
         self.test_transform = [
             torchvision.transforms.ToTensor(),
-            #UnnormalizeTransform(255),
+            UnnormalizeTransform(255),
         ]
         self.train_transform = self._set_train_transform(augmentation_strength=2) 
         
