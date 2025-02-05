@@ -49,10 +49,10 @@ def train_random(net, device, config, embedding_dim=None):
             n = n.view(-1).long()  # Ensure `n` is on the correct device and has the expected shape
             
             target = torch.stack([
-                torch.rand(1, generator=torch.Generator().manual_seed(int(seed)))
+                torch.randn((1, config.output_size), generator=torch.Generator().manual_seed(int(seed))).softmax(dim=1)
                 for seed in n
-            ]).squeeze().type(torch.LongTensor).to(device)
-
+            ]).squeeze().to(device)
+            
             loss_diet = criterion_diet(logits_diet, target)
             logits_probe = W_probe(z.detach())
             loss_probe = criterion(logits_probe, y)
