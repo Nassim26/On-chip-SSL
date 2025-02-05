@@ -5,10 +5,10 @@ from tqdm import tqdm
 from utils import save_logs, save_model, get_datasets, get_datasets_seq
 
 ##############################
-# ArgMax DIET               #
+# Random DIET               #
 ##############################
 
-def train_simcirc(net, device, config, embedding_dim=None):
+def train_random(net, device, config, embedding_dim=None):
     if embedding_dim == None:
         try: 
             embedding_dim = net.embedding_dim
@@ -30,18 +30,13 @@ def train_simcirc(net, device, config, embedding_dim=None):
     print("Embedding_dim size:", embedding_dim)
     W_diet = torch.nn.Linear(embedding_dim, embedding_dim, bias=False).to(device)
 
-    # print("Check this out!")
-    # plt.stem(np.abs(np.linalg.eig(W_diet.weight.detach().cpu().numpy())[0]))
-    # plt.show()
-    ### End new....
-
     optimizer = torch.optim.AdamW(
         list(net.parameters()) + list(W_probe.parameters()) + list(W_diet.parameters()),
         lr=config.lr, weight_decay=config.weight_decay
     )
 
     criterion = torch.nn.CrossEntropyLoss(label_smoothing=0.0)
-    criterion_diet = torch.nn.CrossEntropyLoss(label_smoothing=config.label_smoothing)
+    criterion_diet = torch.nn.CrossEntropyLoss(label_smoothing=0.0)
 
     for epoch in range(config.num_epoch):
         net.train()
@@ -52,9 +47,11 @@ def train_simcirc(net, device, config, embedding_dim=None):
             z = net(x)
             logits_diet = W_diet(z)
             n = n.to(device).view(-1).long()  # Ensure `n` is on the correct device and has the expected shape
-
-            target = torch.argmax(logits_diet, dim=1) 
             
+            generator = torch.Generator(device='cuda')
+            generator.manual_seed(int(n))
+            target = torch.rand(size=torch.size(logits_diet))
+
             loss_diet = criterion_diet(logits_diet, target)
             logits_probe = W_probe(z.detach())
             loss_probe = criterion(logits_probe, y)
@@ -82,8 +79,6 @@ def train_simcirc(net, device, config, embedding_dim=None):
         all_labels.append(y.cpu().numpy())
         run_acc_test.append(torch.mean((y == logits_probe.argmax(1)).to(float)).item())
     print('Test accuracy=%.4f' % np.mean(run_acc_test))
-    ### Begin new new!!!!
-    # plt.stem(np.abs(np.linalg.eig(W_diet.weight.detach().cpu().numpy())[0]))
-    ### End new new....
+
 
     save_model(net, "params.pth")
