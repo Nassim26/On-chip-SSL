@@ -100,6 +100,15 @@ def get_datasets_seq(config):
             train=False, download=True, root="./data",
             transform=torchvision.transforms.Compose(config.test_transform)
         )
+    elif config.dataset == "CIFAR100":
+        training_data = torchvision.datasets.CIFAR100(
+            train=True, download=True, root="./data",
+            transform=torchvision.transforms.Compose(config.train_transform)
+        )
+        test_data = torchvision.datasets.CIFAR100(
+            train=False, download=True, root="./data",
+            transform=torchvision.transforms.Compose(config.test_transform)
+        )
     elif config.dataset == "KMNIST":
         training_data = torchvision.datasets.KMNIST(
             train=True, download=True, root="./data",
